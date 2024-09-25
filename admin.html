@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="./css/main.css">
+  <link rel="icon" href="./images/logo.svg">
+  <title>Student List</title>
+</head>
+<body class="bg-[#F2EAE1]">
+  
+  <div class="flex">
+    <nav class="w-[22%] h-[110vh] overflow-y-auto">
+      <div class="p-[35px]">
+        <img class="border-l-[5px] border-[#FEAF00] pl-[12px] mr-[10px] mx-auto" src="./images/logo.svg" alt="logo img" width="273" height="39">
+      </div>
+      <div class="pt-[33px] pl-[41px] space-y-[15px]">
+        <label class="block cursor-pointer">
+          <input class="add-choose-input hidden" type="file">
+          <img class="add-choose-img mx-auto mr-[90px] rounded-md" src="./images/avatar.svg" alt="photo" width="160" height="214">
+        </label>
+        <div class="pb-[200px] m-auto">
+          <strong class="text-[25px] ml-[29px] leading-[35px] text-[#000000]">Karthi Madesh</strong>
+          <span class="text-[25px] ml-[78px] leading-[35px] text-[#FEAF00]">Admin</span>
+          <button class="w-[90%] mt-[15px] hover:bg-white duration-300 hover:text-[#FEAF00] flex gap-[5px] inline-block py-[19px] px-[75px] bg-[#FEAF00]">
+            <img src="./images/student.svg" alt="student img" width="20" height="20">
+            <span class="block text-[20px] leading-[17px] text-[#000000]">Students</span>
+          </button>
+        </div>
+        <button class="logout-btn p-5 flex items-center gap-[23px]">
+          <h2 class="text-center user-logined text-[25px] hover:text-[#FEAF00] duration-300">Logout</h2>
+          <img class="mt-[8px]" src="./images/log out.svg" alt="log out" width="17" height="17">
+        </button>
+        <div class="logout-notification absolute bg-[#F2EAE1] w-full py-5 bottom-0 -left-[100%] duration-300">
+          <h1 class="text-center">Are you sure to log out?</h1>
+          <div class="flex w-full justify-center gap-4 mt-3">
+            <button id="logout-no" class="bg-[#FEAF00] text-white py-2 px-3 rounded-lg">No</button>
+            <button id="logout-yes" class="bg-[#FEAF00] text-white py-2 px-3 rounded-lg">Yes</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="w-[78%] h-[100vh] overflow-y-auto bg-slate-100">
+      <div class="flex bg-[#F2EAE1] items-center gap-[31px] justify-end px-[61px] py-[31.5px]">
+        <a class="mr-[600px]" href="#">
+          <img src="./images/back.svg" alt="back img" width="80" height="80">
+        </a>
+        <label class="admin-label flex inline-block w-[400px] py-[11px] pl-[34px] bg-white pr-[24px] rounded-[8px]">
+          <input class="search-input w-[212px] focus:text-[#CDCDCD] outline-none text-[23px] leading-[23px] placeholder:text-[23px] placeholder:text-[#F2EAE1]" type="text" name="searchValue" placeholder="Найти" autocomplete="off">
+          <img class="ml-[100px]" src="./images/search.svg" alt="search img" width="54" height="54">
+        </label>
+        <a href="#">
+          <img src="./images/noticin.svg" alt="img" width="80" height="80">
+        </a>
+      </div>
+      <ul class="flex items-center justify-between space-x-[46px]">
+        <h1 class="py-[30px] px-[45px] font-bold text-[28px] leading-[26px] text-[#000000]">Students List</h1>
+        <div class="flex items-center gap-[30px] justify-between pt-[22px] px-[42px] pb-[40px]">
+          <button class="sort-by-username-btn">
+            <img src="./images/sort.svg" alt="sort img" width="22" height="22">
+          </button>
+          <button onclick="handleAddProductBtnClick()" class="w-[250px] bg-[#FEAF00] text-white text-[20px] py-[15px] px-[14px] text-center font-bold rounded-[4px] hover:bg-transparent duration-300 hover:text-[#FEAF00] hover:border-[#FEAF00]">ADD NEW STUDENT</button>
+        </div>
+      </ul>
+      <div class="border-b-[2px] w-[1110px] ml-[45px] mb-[21px] border-[#ACACAC]"></div>        
+      <div class="px-[42px]">
+        <table class="w-full bg-white">
+          <thead>
+            <tr class="bg-white">
+              <th class="py-[17px] text-[#ACACAC] text-[20px] leading-[35px]">Profile img</th>
+              <th class="py-[17px] text-start text-[#ACACAC] text-[20px] leading-[35px]">Name</th>
+              <th class="py-[17px] text-start text-[#ACACAC] text-[20px] leading-[35px]">Email</th>
+              <th class="py-[17px] text-start text-[#ACACAC] text-[20px] leading-[35px]">Phone</th>
+              <th class="py-[17px] text-start text-[#ACACAC] text-[20px] leading-[35px]">Enroll Number</th>
+              <th class="py-[17px] text-start text-[#ACACAC] text-[20px] leading-[35px]">Date admission</th>
+            </tr>
+          </thead>
+          <tbody class="pool-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <div  id="wrapper" class="modal-wrapper scale-0 duration-300 flex-col fixed top-0 bottom-0 right-0 left-0 backdrop-blur">
+    <div class="modal-inner w-[500px] h-[680px] bg-[#FEAF00] rounded-[20px] absolute top-0 bottom-0 right-0 left-0 m-auto"></div>
+  </div>
+  
+  <script src="./js/Admin/admin.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            clifford: '#da373d',
+          }
+        }
+      }
+    }
+  </script>
+</body>
+</html>
